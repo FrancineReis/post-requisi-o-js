@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>    
+    <section>
+        <h1>Autores</h1>
+        <ul id="autores"></ul>
+    </section>
+
+    <section>
+
+      <label for="title">Titulo</label>
+      <input id="titulo" type="text" name="title"> <br>
+
+      <label for="descrição"> Descrição </label>
+      <input type="text" id="descricao" name="descricao">
+
+      <input type="submit" value="Publicar" onclick=" cadastrarUsuario(event)">
+
+    </section>
+
+    <script>
+        const ul = document.getElementById('autores');
+        const url = 'https://jsonplaceholder.typicode.com/users';
+
+        fetch(url, { method: 'GET' }).then(response => {
+           return response.json();
+        }).then(data => {
+           let autores = data;
+
+           autores.map(function(autor) {
+            let li = document.createElement('li');
+            let nome = document.createElement('h2');
+            let email = document.createElement('span');
+
+            nome.innerHTML = `${autor.name}`;
+            email.innerHTML = `${autor.email}`;
+
+            li.appendChild(nome);
+            li.appendChild(email);
+            ul.appendChild(li)
+           })
+        }).catch(function(erro){
+            console.log(erro);
+        });
+
+        
+        function cadastrarUsuario(even) {
+          event.preventDefault(); 
+          const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+          const titleValue = document.getElementById('titulo').value;
+          const descricaoValue = document.getElementById('descricao').value;
+
+          const publicacao = {
+            title: titleValue,
+            body: descricaoValue,
+            userId: 1
+          }
+        
+
+          fetch(apiUrl, { method: 'POST', body: JSON.stringify(publicacao) })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.log(error))
+
+          } 
+
+
+          
+
+
+    </script>
+</body>
+</html>
